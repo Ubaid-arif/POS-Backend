@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const dotenv = require('dotenv')
 const cors = require('cors')
-const helmet = require('helmet')
+// const helmet = require('helmet')
 dotenv.config()
 const port = process.env.PORT || 3001
 
