@@ -7,38 +7,77 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum paymentType {
+enum PaymentType {
   CASH
   CREDIT
 }
 
+enum ServiceType {
+  CHAR
+  DEFAULT
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  password  String
-  createdAt DateTime
-  updatedAt DateTime
-  deleted   Boolean  @default(false)
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String
+  phoneNumber String?
+  password    String
+  createdAt   DateTime
+  updatedAt   DateTime
+  deleted     Boolean  @default(false)
 }
 
 model Customer {
-  id        String  @unique @default(uuid())
-  name      String
-  code      String  @unique()
-  address   String?
-  createdAt String
-  updatedAt String
-  deleted   Boolean @default(false)
-  sales     Sales[]
+  id           String         @unique @default(cuid())
+  name         String
+  code         String         @unique()
+  address      String?
+  phoneNumber  String
+  createdAt    DateTime
+  updatedAt    DateTime
+  deleted      Boolean        @default(false)
+  sales        Sales[]
+  Transaction  Transaction[]
+  SpecialPrice SpecialPrice[]
 }
 
 model Sales {
   id          String      @id @default(cuid())
   quantity    Int         @default(0)
-  price       Int         @default(0)
-  total       Int         @default(0)
-  paymentType paymentType @default(CREDIT)
+  price       Float         @default(0)
+  total       Float         @default(0)
+  paymentType PaymentType @default(CREDIT)
   customerId  String
   customer    Customer    @relation(fields: [customerId], references: [id])
+  paid        Boolean     @default(false)
+  createdAt   DateTime
+  upadateAt   DateTime
+  deleted     Boolean     @default(false)
+}
+
+model Transaction {
+  id              String   @id @default(cuid())
+  quantity        Int      @default(0)
+  price           Float      @default(0)
+  rate            Float?
+  customerId      String
+  customer        Customer @relation(fields: [customerId], references: [id])
+  startDate       DateTime
+  endDate         DateTime
+  balance         Int      @default(0)
+  perviousBalance Int      @default(0)
+  createdAt       DateTime
+  upadateAt       DateTime
+  deleted         Boolean  @default(false)
+}
+
+model SpecialPrice {
+  id         String      @id @default(cuid())
+  customerId String
+  customer   Customer    @relation(fields: [customerId], references: [id])
+  type       ServiceType @default(DEFAULT)
+  createdAt  DateTime
+  upadateAt  DateTime
+  deleted    Boolean     @default(false)
 }
