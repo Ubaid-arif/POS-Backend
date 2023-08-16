@@ -27,7 +27,8 @@
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.0",
     "nodemailer": "^6.9.2",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "pino": "^8.15.0"
   },
   "devDependencies": {
     "prisma": "^4.15.0"
