@@ -1,22 +1,21 @@
 const { PrismaClient } = require("@prisma/client");
-const errorLogger = require("../config/error.logger");
+const {
+  BadRequestError,
+  InternalServerError,
+} = require("../config/exceptions");
 const prisma = new PrismaClient();
-const signupUser = async ({ name, email, password, phoneNumber }) => {
+exports.signupUser = async ({ name, email, password, number }) => {
   try {
-    const result = await prisma.user.create({
+    const result = await prisma.users.create({
       data: {
-        name,
         email,
+        name,
+        number,
         password,
-        phoneNumber,
       },
     });
     return result;
   } catch (error) {
-    errorLogger.error(error, "An error occurred");
+    throw new InternalServerError(error.message);
   }
-};
-
-module.exports = {
-  signupUser,
 };

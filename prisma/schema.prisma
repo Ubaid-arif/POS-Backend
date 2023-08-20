@@ -17,15 +17,15 @@ enum ServiceType {
   DEFAULT
 }
 
-model User {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  name        String
-  phoneNumber String?
-  password    String
-  createdAt   DateTime
-  updatedAt   DateTime
-  deleted     Boolean  @default(false)
+model Users {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  number    String?
+  password  String
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  deleted   Boolean   @default(false)
 }
 
 model Customer {
@@ -34,8 +34,8 @@ model Customer {
   code         String         @unique()
   address      String?
   phoneNumber  String
-  createdAt    DateTime
-  updatedAt    DateTime
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
   deleted      Boolean        @default(false)
   sales        Sales[]
   Transaction  Transaction[]
@@ -45,31 +45,31 @@ model Customer {
 model Sales {
   id          String      @id @default(cuid())
   quantity    Int         @default(0)
-  price       Float         @default(0)
-  total       Float         @default(0)
+  price       Float       @default(0)
+  total       Float       @default(0)
   paymentType PaymentType @default(CREDIT)
   customerId  String
   customer    Customer    @relation(fields: [customerId], references: [id])
   paid        Boolean     @default(false)
-  createdAt   DateTime
-  upadateAt   DateTime
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime?   @updatedAt
   deleted     Boolean     @default(false)
 }
 
 model Transaction {
-  id              String   @id @default(cuid())
-  quantity        Int      @default(0)
-  price           Float      @default(0)
+  id              String    @id @default(cuid())
+  quantity        Int       @default(0)
+  price           Float     @default(0)
   rate            Float?
   customerId      String
-  customer        Customer @relation(fields: [customerId], references: [id])
+  customer        Customer  @relation(fields: [customerId], references: [id])
   startDate       DateTime
   endDate         DateTime
-  balance         Int      @default(0)
-  perviousBalance Int      @default(0)
-  createdAt       DateTime
-  upadateAt       DateTime
-  deleted         Boolean  @default(false)
+  balance         Int       @default(0)
+  perviousBalance Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime? @updatedAt
+  deleted         Boolean   @default(false)
 }
 
 model SpecialPrice {
@@ -77,7 +77,7 @@ model SpecialPrice {
   customerId String
   customer   Customer    @relation(fields: [customerId], references: [id])
   type       ServiceType @default(DEFAULT)
-  createdAt  DateTime
-  upadateAt  DateTime
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime?   @updatedAt
   deleted    Boolean     @default(false)
 }

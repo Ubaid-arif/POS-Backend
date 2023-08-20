@@ -1,8 +1,9 @@
 const express = require("express");
 const { createUser } = require("../../controller/User");
+const { caughtError } = require("../../config/caughtError");
 const router = express.Router();
 
-router.post("/signup", createUser);
+router.post("/signup", caughtError(createUser));
 
 // create
 //update

@@ -1,8 +1,12 @@
 const pino = require("pino");
 
 const errorLogger = pino({
-  level: "error", // Set the logging level to "error"
-  // Add any other Pino configuration options here
+  transport: {
+    target: "pino-pretty",
+    options: {
+      colorize: true,
+    },
+  },
 });
 
 module.exports = errorLogger;

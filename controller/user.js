@@ -1,4 +1,4 @@
-const { signupUser } = require("../service/user");
+const { signupUser } = require("../service/user.js");
 
 const createUser = async (req, res) => {
   const data = req.body.data;
