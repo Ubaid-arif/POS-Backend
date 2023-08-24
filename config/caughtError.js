@@ -2,7 +2,7 @@ const errorLogger = require("./error.logger");
 const BaseError = require("./exceptions");
 
 function returnError(err, req, res, next) {
-  errorLogger.error(err.message);
+  errorLogger.error(err);
   res
     .status(err.statusCode || 500)
     .send(err.message || "oops something went wrong");

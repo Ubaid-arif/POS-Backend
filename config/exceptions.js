@@ -14,9 +14,9 @@ class BaseError extends Error {
 
 class BadRequestError extends BaseError {
   constructor(
-    description = "Not found",
+    description = "bad request",
     name,
-    statusCode = httpStatusCodes.NOT_FOUND,
+    statusCode = httpStatusCodes.BAD_REQUEST,
     isOperational = true
   ) {
     super(name, statusCode, isOperational, description);

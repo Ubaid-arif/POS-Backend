@@ -5,17 +5,17 @@ CREATE TYPE "PaymentType" AS ENUM ('CASH', 'CREDIT');
 CREATE TYPE "ServiceType" AS ENUM ('CHAR', 'DEFAULT');
 
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "Users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "phoneNumber" TEXT,
+    "number" TEXT,
     "password" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
     "deleted" BOOLEAN NOT NULL DEFAULT false,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -25,8 +25,8 @@ CREATE TABLE "Customer" (
     "code" TEXT NOT NULL,
     "address" TEXT,
     "phoneNumber" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
     "deleted" BOOLEAN NOT NULL DEFAULT false
 );
 
@@ -39,8 +39,8 @@ CREATE TABLE "Sales" (
     "paymentType" "PaymentType" NOT NULL DEFAULT 'CREDIT',
     "customerId" TEXT NOT NULL,
     "paid" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" TIMESTAMP(3) NOT NULL,
-    "upadateAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
     "deleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Sales_pkey" PRIMARY KEY ("id")
@@ -57,8 +57,8 @@ CREATE TABLE "Transaction" (
     "endDate" TIMESTAMP(3) NOT NULL,
     "balance" INTEGER NOT NULL DEFAULT 0,
     "perviousBalance" INTEGER NOT NULL DEFAULT 0,
-    "createdAt" TIMESTAMP(3) NOT NULL,
-    "upadateAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
     "deleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
@@ -69,15 +69,15 @@ CREATE TABLE "SpecialPrice" (
     "id" TEXT NOT NULL,
     "customerId" TEXT NOT NULL,
     "type" "ServiceType" NOT NULL DEFAULT 'DEFAULT',
-    "createdAt" TIMESTAMP(3) NOT NULL,
-    "upadateAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
     "deleted" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "SpecialPrice_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Customer_id_key" ON "Customer"("id");
