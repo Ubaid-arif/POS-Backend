@@ -3,6 +3,7 @@ const {
   BadRequestError,
   InternalServerError,
 } = require("../config/exceptions");
+const { hashing, compareHashing } = require("../config/bcrypt");
 const prisma = new PrismaClient();
 exports.signupUser = async ({ name, email, password, number }) => {
   try {
@@ -23,12 +24,31 @@ exports.signupUser = async ({ name, email, password, number }) => {
           email,
           name,
           number,
-          password,
+          password: hashing(password),
         },
       });
       return result;
     }
   } catch (error) {
     throw new InternalServerError(error.message);
+  }
+};
+
+exports.signInUser = async ({ email, password }) => {
+  const getUser = await prisma.users.findFirst({
+    where: {
+      email,
+      deleted: false,
+    },
+  });
+  if (!getUser) {
+    throw new BadRequestError("User Not Found");
+  } else {
+    const IsMatch = compareHashing(password, getUser.password);
+    if (!IsMatch) {
+      throw new BadRequestError("Invalid Credentials");
+    } else {
+      return "sucessfully login";
+    }
   }
 };
