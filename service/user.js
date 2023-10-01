@@ -45,7 +45,7 @@ exports.signInUser = async ({ email, password }) => {
     throw new BadRequestError("User Not Found");
   } else {
     const IsMatch = compareHashing(password, getUser.password);
-    if (!IsMatch) {
+    if (IsMatch) {
       throw new BadRequestError("Invalid Credentials");
     } else {
       return "sucessfully login";
