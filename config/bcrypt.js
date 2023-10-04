@@ -1,8 +1,9 @@
 const bcrypt = require("bcrypt");
 
-const hashing = (password) => {
+const hashing = async (password) => {
   const saltRounds = 10;
-  const hash = bcrypt.hash(password, saltRounds);
+  const hash = await bcrypt.hash(password, saltRounds);
+  console.log("🚀 ~ file: bcrypt.js:6 ~ hashing ~ hash:", hash);
   return hash;
 };
 
