@@ -5,6 +5,7 @@ const {
 } = require("../config/exceptions");
 const { hashing, compareHashing } = require("../config/bcrypt");
 const prisma = new PrismaClient();
+const jwt = require("jsonwebtoken");
 
 exports.signupUser = async ({ name, email, password, number }) => {
   try {
@@ -78,8 +79,25 @@ exports.update_password = async ({ email, password }) => {
           password: hash,
         },
       });
-      delete result.password
+      delete result.password;
       return { message: "successfully updated", result };
     }
+  }
+};
+
+exports.fetchUserDetail = async (token) => {
+  var decoded = await jwt.verify(token, "raazkibthain");
+  console.log("decoded-------->", decoded);
+  if (decoded.email) {
+    let email = decoded?.email;
+    const getUser = await prisma.users.findFirst({
+      where: {
+        email,
+        deleted: false,
+      },
+    });
+    return { message: "use mil gaya hain", getUser };
+  } else {
+    return { message: "token sahi hain hain Bhai" };
   }
 };

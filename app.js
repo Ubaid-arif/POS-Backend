@@ -31,7 +31,7 @@ app.use(returnError);
 
 //uncaught exceptions handler
 process.on("uncaughtException", (error, req, res, next) => {
-  errorLogger.err(error || "Uncaught exception");
+  errorLogger?.err(error || "Uncaught exception");
   if (!isOperationalError(error)) {
     process.exit(1);
   }
