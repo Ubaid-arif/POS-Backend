@@ -14,10 +14,8 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const data = req.body.data;
-  var token = jwt.sign({ email: data?.email }, "raazkibthain");
   const result = await signInUser(data);
-  console.log("result-------->", result);
-  res.status(200).json({ result, token });
+  res.status(200).json({ result });
 };
 const updatePassword = async (req, res) => {
   const data = req.body.data;
@@ -27,8 +25,7 @@ const updatePassword = async (req, res) => {
 };
 
 const userDetails = async (req, res) => {
-  const { token } = req?.headers;
-  const result = await fetchUserDetail(token);
+  const result = await fetchUserDetail(req);
   return res.status(200).json({ result });
 };
 module.exports = {

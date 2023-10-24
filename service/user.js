@@ -6,6 +6,7 @@ const {
 const { hashing, compareHashing } = require("../config/bcrypt");
 const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken");
+const { genToken } = require("../config/jwt-strategy");
 
 exports.signupUser = async ({ name, email, password, number }) => {
   try {
@@ -51,7 +52,11 @@ exports.signInUser = async ({ email, password }) => {
     if (!IsMatch) {
       throw new BadRequestError("Invalid Credentials");
     } else {
-      return "sucessfully login";
+      const token = genToken(getUser.id);
+      return {
+        message: "successfully login",
+        token,
+      };
     }
   }
 };
@@ -85,19 +90,6 @@ exports.update_password = async ({ email, password }) => {
   }
 };
 
-exports.fetchUserDetail = async (token) => {
-  var decoded = await jwt.verify(token, "raazkibthain");
-  console.log("decoded-------->", decoded);
-  if (decoded.email) {
-    let email = decoded?.email;
-    const getUser = await prisma.users.findFirst({
-      where: {
-        email,
-        deleted: false,
-      },
-    });
-    return { message: "use mil gaya hain", getUser };
-  } else {
-    return { message: "token sahi hain hain Bhai" };
-  }
+exports.fetchUserDetail = (req, res) => {
+  return req?.user;
 };

@@ -1,14 +1,18 @@
 const express = require("express");
-const { createUser, loginUser , updatePassword, userDetails } = require("../../controller/User");
+const {
+  createUser,
+  loginUser,
+  updatePassword,
+  userDetails,
+} = require("../../controller/User");
 const { caughtError } = require("../../config/caughtError");
+const { authHandler } = require("../../config/auth-strategy");
 const router = express.Router();
 
 router.post("/signup", caughtError(createUser));
 router.post("/login", caughtError(loginUser));
 router.post("/update", caughtError(updatePassword));
-router.post("/me", caughtError(userDetails));
-
-
+router.get("/me", authHandler, caughtError(userDetails));
 
 // create
 //update
