@@ -23,6 +23,17 @@ class BadRequestError extends BaseError {
   }
 }
 
+class NotFoundError extends BaseError {
+  constructor(
+    description = "NOT FOUND",
+    name,
+    statusCode = httpStatusCodes.NOT_FOUND,
+    isOperational = true
+  ) {
+    super(name, statusCode, isOperational, description);
+  }
+}
+
 class InternalServerError extends BaseError {
   constructor(
     description = "Internal Server Error.",
@@ -60,4 +71,5 @@ module.exports = {
   InternalServerError,
   ForbiddenError,
   UnauthorizedError,
+  NotFoundError,
 };

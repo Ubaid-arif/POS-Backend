@@ -7,3 +7,14 @@ module.exports.httpStatusCodes = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
 };
+
+const pagination_constructor = (offset, limit) => {
+  return {
+    skip: +offset || 0,
+    take: +limit || 10,
+  };
+};
+
+module.exports = {
+  pagination_constructor,
+};
