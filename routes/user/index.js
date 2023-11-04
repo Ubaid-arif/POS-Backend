@@ -4,7 +4,7 @@ const {
   loginUser,
   updatePassword,
   userDetails,
-} = require("../../controller/User");
+} = require("../../controller/user");
 const { caughtError } = require("../../config/caughtError");
 const { authHandler } = require("../../config/auth-strategy");
 const router = express.Router();
