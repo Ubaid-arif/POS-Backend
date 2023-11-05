@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const {
   BadRequestError,
   InternalServerError,
+  NotFoundError,
 } = require("../config/exceptions");
 
 const prisma = new PrismaClient();
@@ -70,3 +71,34 @@ exports.deletCustomerService = async ({ id }) => {
     throw new InternalServerError(error.message);
   }
 };
+
+// update Customer
+exports.updateCustomer = async ({ id, code, ...rest }) => {
+  try {
+    const getCustomer = await prisma.customer.findFirst({ where: { id } });
+
+    if (!getCustomer) throw new NotFoundError();
+
+    const CheckCode = await prisma.customer.findFirst({ where: { code } });
+    if (CheckCode) {
+      throw new BadRequestError(
+        "This Code is already exit Please try a new Code "
+      );
+    }
+    const data = {
+      code,
+      ...rest,
+    };
+    const update = await prisma.customer.update({ data, where: { id } });
+    return {
+      message: "update successfully",
+      data: update,
+    };
+  } catch (error) {
+    throw new InternalServerError(error.message);
+  }
+};
+
+// naming,
+// exports,
+// js // constant
